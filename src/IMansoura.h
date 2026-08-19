@@ -55,6 +55,34 @@ namespace mansoura
     virtual void show()=0;
     virtual TextExtents extents() const=0;
     virtual void* context() const=0;
+    virtual TextProperties properties() const=0;
+    virtual TextProperties properties(const TextProperties&)=0;
+    void setMarkup(const std::string& markup) {
+      auto p=properties();
+      p.markup=markup;
+      properties(p);
+    }
+    void setText(const std::string& text) {
+      auto p=properties();
+      p.plainText=text;
+      p.markup="";
+      properties(p);
+    }
+    void setFontSize(double fontSize) {
+      auto p=properties();
+      p.fontSize=fontSize;
+      properties(p);
+    }
+    void setFontFamily(const std::string& fontFamily) {
+      auto p=properties();
+      p.fontFamily=fontFamily;
+      properties(p);
+    }
+    void setAngle(double angle) {
+      auto p=properties();
+      p.angle=angle;
+      properties(p);
+    }
   };
 
   class IMansoura;
@@ -88,6 +116,7 @@ namespace mansoura
     virtual void stroke() const = 0;
     virtual void strokePreserve() const = 0;
     virtual void clip() const = 0;
+    virtual void clipPreserve() const = 0;
     virtual void resetClip() const = 0;
     virtual void paint() const = 0;
     /// @}

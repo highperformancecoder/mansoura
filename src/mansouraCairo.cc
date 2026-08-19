@@ -64,6 +64,9 @@ namespace mansoura
   void MansouraCairo::clip() const
   {cairo_clip(cairo);}
 
+  void MansouraCairo::clipPreserve() const
+  {cairo_clip_preserve(cairo);}
+
   void MansouraCairo::resetClip() const
   {cairo_reset_clip(cairo);}
 
@@ -171,23 +174,30 @@ namespace mansoura
 
   struct PangoCache: public ICacheRender, public Pango
   {
-    PangoCache(cairo_t* cr, const TextProperties& tp): Pango(cr)
-    {
-      if (!tp.markup.empty())
-        setMarkup(tp.markup);
-      else
-        setText(tp.plainText);
-      setFontSize(tp.fontSize);
-      if (!tp.fontFamily.empty())
-        setFontFamily(tp.fontFamily.c_str());
-      angle=tp.angle;
-    }
+    TextProperties m_properties;
+    PangoCache(cairo_t* cr, const TextProperties& tp):
+      Pango(cr), m_properties(tp)
+    {properties(tp);}                                                 
     void show() override {Pango::show();}
     TextExtents extents() const override
     {return TextExtents{left(),top(),width(),height()};}
       
     void* context() const override
     {return cairoContext();}
+    TextProperties properties() const override
+    {return m_properties;}
+    TextProperties properties(const TextProperties& tp) override
+    {
+      if (!tp.markup.empty())
+        Pango::setMarkup(tp.markup);
+      else
+        Pango::setText(tp.plainText);
+      Pango::setFontSize(tp.fontSize);
+      if (!tp.fontFamily.empty())
+        Pango::setFontFamily(tp.fontFamily.c_str());
+      Pango::angle=tp.angle;
+      return tp;
+    }
   };
   
   std::unique_ptr<ICacheRender>

@@ -30,7 +30,7 @@
 #include <stdexcept>
 using namespace std;
 
-namespace minsky
+namespace mansoura
 {
  
   void SVGRenderer::setResource(const std::string& resource)

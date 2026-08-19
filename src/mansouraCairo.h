@@ -40,6 +40,7 @@ namespace mansoura
     void stroke() const override;
     void strokePreserve() const override;
     void clip() const override;
+    void clipPreserve() const override;
     void resetClip() const override;
     void paint() const override;
 
