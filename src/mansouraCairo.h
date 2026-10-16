@@ -33,6 +33,7 @@ namespace mansoura
     void newSubPath() const override;
     void closePath() const override;
     void getCurrentPoint(double& x, double& y) const override;
+    std::unique_ptr<IPath> copyPath() const override;
 
     // Fill and stroke operations
     void fill() const override;

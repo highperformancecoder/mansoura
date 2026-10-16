@@ -86,6 +86,17 @@ namespace mansoura
   };
 
   class IMansoura;
+
+  /// a copy of a path, along with the transformation in force when it
+  /// was copied, so that it can be reinstated later
+  class IPath
+  {
+  public:
+    virtual ~IPath()=default;
+    /// append the saved path (with its saved transformation) to the
+    /// current path of \a ctx
+    virtual void appendToCurrent(const IMansoura& ctx) const=0;
+  };
   
   /// Abstract interface for Cairo drawing operations
   class IMansoura
@@ -108,6 +119,8 @@ namespace mansoura
     virtual void newSubPath() const = 0;
     virtual void closePath() const = 0;
     virtual void getCurrentPoint(double& x, double& y) const = 0;
+    /// copy the current path
+    virtual std::unique_ptr<IPath> copyPath() const = 0;
     /// @}
     
     /// @{ Fill and stroke operations

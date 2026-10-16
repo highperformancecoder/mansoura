@@ -147,6 +147,33 @@ namespace mansoura
   void MansouraCairo::userToDevice(double& x, double& y) const
   {cairo_user_to_device(cairo, &x, &y);}
 
+  namespace
+  {
+    class CairoPath: public IPath
+    {
+      cairo_path_t* path;
+      cairo_matrix_t transformation;
+    public:
+      CairoPath(cairo_t* cr): path(cairo_copy_path(cr))
+      {cairo_get_matrix(cr,&transformation);}
+      ~CairoPath() override {cairo_path_destroy(path);}
+      CairoPath(const CairoPath&)=delete;
+      void operator=(const CairoPath&)=delete;
+      void appendToCurrent(const IMansoura& ctx) const override
+      {
+        auto cr=static_cast<cairo_t*>(ctx.context());
+        // apply saved transformation along with path
+        cairo_save(cr);
+        cairo_set_matrix(cr,&transformation);
+        cairo_append_path(cr,path);
+        cairo_restore(cr);
+      }
+    };
+  }
+
+  std::unique_ptr<IPath> MansouraCairo::copyPath() const
+  {return std::make_unique<CairoPath>(cairo);}
+
   // Context state operations
   void MansouraCairo::save() const
   {cairo_save(cairo);}
