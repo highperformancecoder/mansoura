@@ -6,7 +6,7 @@
   Open source licensed under the GPL3 license. See LICENSE for details.
 */
 
-#include "plot.h"
+#include "mansouraPlot.h"
 #include "pango.h"
 #include <limits>
 #include <map>
@@ -19,7 +19,10 @@ using namespace mansoura;
 namespace
 {
   inline double sqr(double x) {return x*x;}
+}
 
+namespace mansoura
+{
   Colour palette[]=
     {
       {0,0,0,1}, //black
@@ -34,10 +37,7 @@ namespace
     };
 
   const int paletteSz = sizeof(palette)/sizeof(palette[0]);
-}
 
-namespace mansoura
-{
   vector<double> Plot::LineStyle::dashPattern() const
   {
     vector<double> r;
@@ -421,7 +421,7 @@ namespace mansoura
     mans.setSourceRGBA(0.5,0.5,0.5,0.5);
     mans.identityMatrix();
     mans.setLineWidth(1);
-    mans.stroke();
+    stroke(mans);
 
     if (subgrid && increment>0)
       {
@@ -718,9 +718,8 @@ namespace mansoura
       mans.setSourceRGBA(0,0,0,1); //black
       mans.rectangle(iflogx(minx),0,dx,h);
       mans.clipPreserve();
-      mans.stroke();
+      stroke(mans);
       
-
       mans.setSourceRGBA(0, 0, 0, 1);
 
 

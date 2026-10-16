@@ -17,8 +17,8 @@
   You should have received a copy of the GNU General Public License
   along with Minsky.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef ICAIROSHIM_H
-#define ICAIROSHIM_H
+#ifndef IMANSOURA_H
+#define IMANSOURA_H
 
 #include <cmath>
 #include <memory>

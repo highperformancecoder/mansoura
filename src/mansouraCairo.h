@@ -1,5 +1,5 @@
-#ifndef CAIROSHIMCAIRO_H
-#define CAIROSHIMCAIRO_H
+#ifndef MANSOURACAIRO_H
+#define MANSOURACAIRO_H
 #include "IMansoura.h"
 #include "SVGItem.h"
 #include <cairo.h>

@@ -15,6 +15,9 @@ using namespace std;
 
 namespace mansoura
 {
+  const char *Pango::defaultFamily=nullptr;
+  double Pango::scaleFactor=1;
+
   MansouraCairo::MansouraCairo(cairo_t* c) : cairo(c) {}
   
   MansouraCairo::~MansouraCairo() = default;
@@ -158,6 +161,7 @@ namespace mansoura
   // SVG rendering support
   void MansouraCairo::renderSVG(const SVGRenderer& svgRenderer, double width, double height) const
   {
+    if (!svgRenderer.svg) return;
 #ifdef MXE // MXE doesn't currently have a Rust compiler, so librsvg can be no later than 2.40.21
     RsvgDimensionData dims;
     rsvg_handle_get_dimensions(svgRenderer.svg, &dims);

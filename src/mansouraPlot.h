@@ -6,8 +6,8 @@
   Open source licensed under the MIT license. See LICENSE for details.
 */
 
-#ifndef PLOT_H
-#define PLOT_H
+#ifndef MANSOURA_PLOT_H
+#define MANSOURA_PLOT_H
 
 #include "IMansoura.h"
 
@@ -25,6 +25,10 @@ namespace mansoura
   {
     double r, g, b, a;
   };
+
+  /// default colour palette
+  extern Colour palette[];
+  extern const int paletteSz;
 
   class Plot
   {
