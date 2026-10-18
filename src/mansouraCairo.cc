@@ -174,6 +174,20 @@ namespace mansoura
   std::unique_ptr<IPath> MansouraCairo::copyPath() const
   {return std::make_unique<CairoPath>(cairo);}
 
+  std::vector<std::pair<double,double>> MansouraCairo::flattenedPathPoints() const
+  {
+    std::vector<std::pair<double,double>> r;
+    auto path=cairo_copy_path_flat(cairo);
+    for (int j=0; j<path->num_data; j+=path->data[j].header.length)
+      {
+        auto data=&path->data[j];
+        if (data->header.type==CAIRO_PATH_LINE_TO)
+          r.emplace_back(data[1].point.x,data[1].point.y);
+      }
+    cairo_path_destroy(path);
+    return r;
+  }
+
   // Context state operations
   void MansouraCairo::save() const
   {cairo_save(cairo);}

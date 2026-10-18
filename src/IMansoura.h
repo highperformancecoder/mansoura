@@ -23,6 +23,8 @@
 #include <cmath>
 #include <memory>
 #include <string>
+#include <vector>
+#include <utility>
 #include <cairo.h>
 
 namespace mansoura
@@ -121,6 +123,8 @@ namespace mansoura
     virtual void getCurrentPoint(double& x, double& y) const = 0;
     /// copy the current path
     virtual std::unique_ptr<IPath> copyPath() const = 0;
+    /// coordinates of the end point of each line segment of the current path, after curves have been flattened
+    virtual std::vector<std::pair<double,double>> flattenedPathPoints() const = 0;
     /// @}
     
     /// @{ Fill and stroke operations

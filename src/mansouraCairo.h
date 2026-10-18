@@ -34,6 +34,7 @@ namespace mansoura
     void closePath() const override;
     void getCurrentPoint(double& x, double& y) const override;
     std::unique_ptr<IPath> copyPath() const override;
+    std::vector<std::pair<double,double>> flattenedPathPoints() const override;
 
     // Fill and stroke operations
     void fill() const override;
