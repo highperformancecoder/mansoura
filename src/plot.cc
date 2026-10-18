@@ -455,7 +455,7 @@ namespace mansoura
 
   }
 
-  void Plot::legendSize(const IMansoura& mans,double& xoffs, double& yoffs, double& width, double& height, double plotWidth, double plotHeight) const
+  void Plot::legendOffsets(double& xoffs, double& yoffs, double plotWidth, double plotHeight) const
   {
     yoffs=0.95*plotHeight;
     switch (legendSide)
@@ -472,22 +472,35 @@ namespace mansoura
         yoffs=legendTop*plotHeight;
         break;
       }
+  }
 
+  void Plot::legendSize(const IMansoura& mans,double& xoffs, double& yoffs, double& width, double& height, double plotWidth, double plotHeight) const
+  {
+    legendOffsets(xoffs,yoffs,plotWidth,plotHeight);
     width=0; height=0;
     double fy=legendFontSz*fontScale*plotHeight;
     for (size_t i=0; i<x.size(); ++i)
-      /*if (i<penLabel.size() && penLabel[i])
-        {
-          height += 1.3*penLabel[i]->height();
-          width = max(width, penLabel[i]->width());
-        }
-        else*/
       if (i<penTextLabel.size() && !penTextLabel[i].empty())
         {
           auto extents=mans.textExtents({penTextLabel[i],"",fabs(fy)});
           height += 1.5*fy; //1.3*(p2.height());
           width = max(width, extents.width);
         }
+    // cache for use by legendSizeFromCache
+    if (fy!=0)
+      legendLabelWidthPerFontSz=width/fabs(fy);
+  }
+
+  void Plot::legendSizeFromCache(double& xoffs, double& yoffs, double& width, double& height, double plotWidth, double plotHeight) const
+  {
+    legendOffsets(xoffs,yoffs,plotWidth,plotHeight);
+    height=0; 
+    double fy=legendFontSz*fontScale*plotHeight;
+    for (size_t i=0; i<x.size(); ++i)
+      if (i<penTextLabel.size() && !penTextLabel[i].empty())
+        height += 1.5*fy;
+    // text scales (approximately) linearly with font size
+    width=height>0? legendLabelWidthPerFontSz*fabs(fy): 0;
   }
   
   void Plot::drawLegend(const IMansoura& mans, double w, double h) const
