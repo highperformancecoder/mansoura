@@ -248,4 +248,17 @@ namespace mansoura
   std::unique_ptr<ICacheRender>
   MansouraCairo::cachedRender(const TextProperties& tp) const
   {return make_unique<PangoCache>(cairo,tp);}
+
+  const IMansoura& measuringContext()
+  {
+    struct Measuring
+    {
+      cairo_surface_t* surf=cairo_image_surface_create(CAIRO_FORMAT_A1, 100, 100);
+      cairo_t* cr=cairo_create(surf);
+      MansouraCairo shim{cr};
+      ~Measuring() {cairo_destroy(cr); cairo_surface_destroy(surf);}
+    };
+    static Measuring m;
+    return m.shim;
+  }
 }

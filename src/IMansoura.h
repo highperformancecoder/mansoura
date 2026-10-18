@@ -201,6 +201,10 @@ namespace mansoura
     ~PreserveContext() {shim.restore();}
   };
   
+
+  /// an IMansoura context that draws nowhere, for use in measuring
+  /// text extents and the like when no real drawing context is available
+  const IMansoura& measuringContext();
 }
 
 #endif // ICAIROSHIM_H
