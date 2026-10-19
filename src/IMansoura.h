@@ -21,6 +21,7 @@
 #define IMANSOURA_H
 
 #include <cmath>
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -201,6 +202,28 @@ namespace mansoura
     ~PreserveContext() {shim.restore();}
   };
   
+
+  /// callback that draws using the given context
+  using DrawFn=std::function<void(const IMansoura&)>;
+
+  /// bounding box of the ink laid down by \a draw
+  struct InkExtents {double left, top, width, height;};
+  InkExtents inkExtents(const DrawFn& draw);
+
+  enum class ExportFormat {PS, PDF, SVG, PNG, EMF};
+  /// render the output of \a draw to a file. Output is scaled by
+  /// \a resolutionScale, and cropped to the extent of the ink drawn.
+  /// @throw std::runtime_error on rendering failure or if the format
+  /// is unavailable on this platform (EMF)
+  void exportTo(ExportFormat format, const std::string& filename,
+                double resolutionScale, const DrawFn& draw);
+
+  /// render \a draw into a width x height pixel PNG file
+  void renderToPNG(const std::string& filename, int width, int height, const DrawFn& draw);
+
+  /// a self-contained context that records its drawing operations
+  /// (useful in tests, or where a context is needed to draw into)
+  std::unique_ptr<IMansoura> makeRecordingContext();
 
   /// an IMansoura context that draws nowhere, for use in measuring
   /// text extents and the like when no real drawing context is available
