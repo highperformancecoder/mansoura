@@ -58,6 +58,8 @@ namespace mansoura
     virtual void show()=0;
     virtual TextExtents extents() const=0;
     virtual void* context() const=0;
+    /// effective font size (including any default) in user units
+    virtual double fontSize() const=0;
     virtual TextProperties properties() const=0;
     virtual TextProperties properties(const TextProperties&)=0;
     void setMarkup(const std::string& markup) {
@@ -224,6 +226,10 @@ namespace mansoura
   /// a self-contained context that records its drawing operations
   /// (useful in tests, or where a context is needed to draw into)
   std::unique_ptr<IMansoura> makeRecordingContext();
+
+  /// bounding box of the ink laid down so far on a context created by makeRecordingContext()
+  /// @throw std::runtime_error if \a ctx is not a recording context
+  InkExtents recordedInkExtents(const IMansoura& ctx);
 
   /// an IMansoura context that draws nowhere, for use in measuring
   /// text extents and the like when no real drawing context is available

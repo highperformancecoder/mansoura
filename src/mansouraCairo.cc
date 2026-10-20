@@ -238,6 +238,7 @@ namespace mansoura
       
     void* context() const override
     {return cairoContext();}
+    double fontSize() const override {return getFontSize();}
     TextProperties properties() const override
     {return m_properties;}
     TextProperties properties(const TextProperties& tp) override
@@ -399,4 +400,13 @@ namespace mansoura
 
   std::unique_ptr<IMansoura> makeRecordingContext()
   {return OwningMansoura::create(cairo_recording_surface_create(CAIRO_CONTENT_COLOR_ALPHA,nullptr));}
+
+  InkExtents recordedInkExtents(const IMansoura& ctx)
+  {
+    auto rec=dynamic_cast<const OwningMansoura*>(&ctx);
+    if (!rec) throw std::runtime_error("not a recording context");
+    InkExtents r{0,0,0,0};
+    cairo_recording_surface_ink_extents(rec->surface(),&r.left,&r.top,&r.width,&r.height);
+    return r;
+  }
 }
