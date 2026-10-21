@@ -60,6 +60,12 @@ namespace mansoura
     virtual void* context() const=0;
     /// effective font size (including any default) in user units
     virtual double fontSize() const=0;
+    /// index into the text corresponding to horizontal position \a x
+    virtual std::string::size_type posToIdx(double x) const=0;
+    /// horizontal position of character \a idx
+    virtual double idxToPos(std::string::size_type idx) const=0;
+    double width() const {return extents().width;}
+    double height() const {return extents().height;}
     virtual TextProperties properties() const=0;
     virtual TextProperties properties(const TextProperties&)=0;
     void setMarkup(const std::string& markup) {

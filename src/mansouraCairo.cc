@@ -239,6 +239,8 @@ namespace mansoura
     void* context() const override
     {return cairoContext();}
     double fontSize() const override {return getFontSize();}
+    std::string::size_type posToIdx(double x) const override {return Pango::posToIdx(x);}
+    double idxToPos(std::string::size_type idx) const override {return Pango::idxToPos(idx);}
     TextProperties properties() const override
     {return m_properties;}
     TextProperties properties(const TextProperties& tp) override
