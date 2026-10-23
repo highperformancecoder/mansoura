@@ -234,7 +234,7 @@ namespace mansoura
     {properties(tp);}                                                 
     void show() override {Pango::show();}
     TextExtents extents() const override
-    {return TextExtents{left(),top(),width(),height()};}
+    {return TextExtents{left(),top(),Pango::width(),Pango::height()};}
       
     void* context() const override
     {return cairoContext();}
