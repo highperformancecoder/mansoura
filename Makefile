@@ -186,7 +186,7 @@ endif
 
 BASIC_CLEAN=rm -f *.o  *~ \\\#* core *.exh *.exc *.d *,D *.exe *.cd *.gc* *.so
 clean:
-	$(BASIC_CLEAN) libravel.* pyravel.so pyravel.pyd RavelCAPI/build.log RavelCAPI/classdesc/build.log $(LICENSES)
+	$(BASIC_CLEAN) libmansoura.*
 	cd src && $(BASIC_CLEAN)
 	#cd test && $(BASIC_CLEAN)
 
