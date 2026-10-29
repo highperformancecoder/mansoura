@@ -121,19 +121,9 @@ endif
 
 ifdef MXE
   DL=dll
-  PYRAVEL=pyravel.pyd
-  PYTHONCAPI=pythonCAPI.o # extra python.lib shims required on Windows
   FLAGS+=-D_WIN32 -I$(HOME)/usr/mxe/include -L$(HOME)/usr/mxe/lib
-  LIBS+=-lsoci_core_4_0 -lsoci_sqlite3_4_0 -lsoci_odbc_4_0 -lsoci_postgresql_4_0
 else
   DL=so
-  # TODO - may enable python on MacOSX?
-  ifeq ($(OS),Darwin)
-    PYRAVEL=
-  else
-    PYRAVEL=pyravel.so
-  endif
-  LIBS+=-lsoci_core
 endif
 
 ifdef AEGIS
