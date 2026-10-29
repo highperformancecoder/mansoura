@@ -148,9 +148,9 @@ namespace
             int omag=int(log10(x));
             int lead=x*pow(10,-omag);
 #if defined(PANGO) && !defined(_WIN32)
-           sprintf(label,"%d×10<sup>%d</sup>",lead,omag);
+            snprintf(label,sizeof(label),"%d×10<sup>%d</sup>",lead,omag);
 #else
-           sprintf(label,"%dE%d",lead,omag);
+            snprintf(label,sizeof(label),"%dE%d",lead,omag);
 #endif
           }
         return label;
@@ -274,15 +274,15 @@ namespace mansoura
     if (unsigned(abs(iscale))+1>=exp_threshold)
       {
         int num=floor(x/scale+0.5);
-        sprintf(label,"%d",num);
+        snprintf(label,sizeof(label),"%d",num);
       }
     else
       {
         double num=scale*floor(x/scale+0.5);
         if (percent)
-          sprintf(label,"%g%%",100*num);
+          snprintf(label,sizeof(label),"%g%%",100*num);
         else
-          sprintf(label,"%g",num);
+          snprintf(label,sizeof(label),"%g",num);
       }
 
     return label;
