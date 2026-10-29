@@ -11,12 +11,13 @@
  
   Pango text is in the Pango basic markup
 */
-#ifndef ECOLAB_PANGO_H
-#define ECOLAB_PANGO_H
+#ifndef MANSOURA_PANGO_H
+#define MANSOURA_PANGO_H
 
 #include <pango/pangocairo.h>
 #include <cairo.h>
 
+#include <cmath>
 #include <stdexcept>
 #include <string>
 #include <assert.h>

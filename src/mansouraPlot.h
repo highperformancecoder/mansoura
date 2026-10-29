@@ -6,8 +6,8 @@
   Open source licensed under the MIT license. See LICENSE for details.
 */
 
-#ifndef PLOT_H
-#define PLOT_H
+#ifndef MANSOURA_PLOT_H
+#define MANSOURA_PLOT_H
 
 #include "IMansoura.h"
 
@@ -25,6 +25,10 @@ namespace mansoura
   {
     double r, g, b, a;
   };
+
+  /// default colour palette
+  extern Colour palette[];
+  extern const int paletteSz;
 
   class Plot
   {
@@ -184,7 +188,17 @@ namespace mansoura
     bool mouseMove(double x, double y, double tolerance, Plot::Formatter formatter=defaultFormatter);
     
     /// calculates the bounding box of the legend, given current font size settings, and the height of the plot
+    /// Also caches the label extents, so that legendSizeFromCache() can be used without needing a drawing context.
     void legendSize(const IMansoura&,double& xoff, double& yoff, double& width, double& height, double plotWidth, double plotHeight) const;
+    /// As legendSize(), but estimates the legend width from label extents cached by the last call to the
+    /// IMansoura legendSize call (eg during drawing). The width is zero if the legend has not yet been measured.
+    void legendSizeFromCache(double& xoff, double& yoff, double& width, double& height, double plotWidth, double plotHeight) const;
+  private:
+    /// maximum legend label width per unit of font size, as measured by the last IMansoura legendSize call
+    mutable double legendLabelWidthPerFontSz=0;
+    /// compute the legend offsets and font size (negative or zero font sizes are possible)
+    void legendOffsets(double& xoff, double& yoff, double plotWidth, double plotHeight) const;
+  protected:
 
     std::vector<std::pair<double,std::string> > xticks;
      

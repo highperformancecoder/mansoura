@@ -1,5 +1,5 @@
-#ifndef CAIROSHIMCAIRO_H
-#define CAIROSHIMCAIRO_H
+#ifndef MANSOURACAIRO_H
+#define MANSOURACAIRO_H
 #include "IMansoura.h"
 #include "SVGItem.h"
 #include <cairo.h>
@@ -33,6 +33,8 @@ namespace mansoura
     void newSubPath() const override;
     void closePath() const override;
     void getCurrentPoint(double& x, double& y) const override;
+    std::unique_ptr<IPath> copyPath() const override;
+    std::vector<std::pair<double,double>> flattenedPathPoints() const override;
 
     // Fill and stroke operations
     void fill() const override;

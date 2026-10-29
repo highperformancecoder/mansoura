@@ -17,12 +17,15 @@
   You should have received a copy of the GNU General Public License
   along with Minsky.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef ICAIROSHIM_H
-#define ICAIROSHIM_H
+#ifndef IMANSOURA_H
+#define IMANSOURA_H
 
 #include <cmath>
+#include <functional>
 #include <memory>
 #include <string>
+#include <vector>
+#include <utility>
 #include <cairo.h>
 
 namespace mansoura
@@ -55,6 +58,14 @@ namespace mansoura
     virtual void show()=0;
     virtual TextExtents extents() const=0;
     virtual void* context() const=0;
+    /// effective font size (including any default) in user units
+    virtual double fontSize() const=0;
+    /// index into the text corresponding to horizontal position \a x
+    virtual std::string::size_type posToIdx(double x) const=0;
+    /// horizontal position of character \a idx
+    virtual double idxToPos(std::string::size_type idx) const=0;
+    double width() const {return extents().width;}
+    double height() const {return extents().height;}
     virtual TextProperties properties() const=0;
     virtual TextProperties properties(const TextProperties&)=0;
     void setMarkup(const std::string& markup) {
@@ -86,6 +97,17 @@ namespace mansoura
   };
 
   class IMansoura;
+
+  /// a copy of a path, along with the transformation in force when it
+  /// was copied, so that it can be reinstated later
+  class IPath
+  {
+  public:
+    virtual ~IPath()=default;
+    /// append the saved path (with its saved transformation) to the
+    /// current path of \a ctx
+    virtual void appendToCurrent(const IMansoura& ctx) const=0;
+  };
   
   /// Abstract interface for Cairo drawing operations
   class IMansoura
@@ -108,6 +130,10 @@ namespace mansoura
     virtual void newSubPath() const = 0;
     virtual void closePath() const = 0;
     virtual void getCurrentPoint(double& x, double& y) const = 0;
+    /// copy the current path
+    virtual std::unique_ptr<IPath> copyPath() const = 0;
+    /// coordinates of the end point of each line segment of the current path, after curves have been flattened
+    virtual std::vector<std::pair<double,double>> flattenedPathPoints() const = 0;
     /// @}
     
     /// @{ Fill and stroke operations
@@ -184,6 +210,36 @@ namespace mansoura
     ~PreserveContext() {shim.restore();}
   };
   
+
+  /// callback that draws using the given context
+  using DrawFn=std::function<void(const IMansoura&)>;
+
+  /// bounding box of the ink laid down by \a draw
+  struct InkExtents {double left, top, width, height;};
+  InkExtents inkExtents(const DrawFn& draw);
+
+  enum class ExportFormat {PS, PDF, SVG, PNG, EMF};
+  /// render the output of \a draw to a file. Output is scaled by
+  /// \a resolutionScale, and cropped to the extent of the ink drawn.
+  /// @throw std::runtime_error on rendering failure or if the format
+  /// is unavailable on this platform (EMF)
+  void exportTo(ExportFormat format, const std::string& filename,
+                double resolutionScale, const DrawFn& draw);
+
+  /// render \a draw into a width x height pixel PNG file
+  void renderToPNG(const std::string& filename, int width, int height, const DrawFn& draw);
+
+  /// a self-contained context that records its drawing operations
+  /// (useful in tests, or where a context is needed to draw into)
+  std::unique_ptr<IMansoura> makeRecordingContext();
+
+  /// bounding box of the ink laid down so far on a context created by makeRecordingContext()
+  /// @throw std::runtime_error if \a ctx is not a recording context
+  InkExtents recordedInkExtents(const IMansoura& ctx);
+
+  /// an IMansoura context that draws nowhere, for use in measuring
+  /// text extents and the like when no real drawing context is available
+  const IMansoura& measuringContext();
 }
 
 #endif // ICAIROSHIM_H

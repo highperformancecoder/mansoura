@@ -16,8 +16,8 @@
   You should have received a copy of the GNU General Public License
   along with Minsky.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SVGITEM_H
-#define SVGITEM_H
+#ifndef MANSOURA_SVGITEM_H
+#define MANSOURA_SVGITEM_H
 #include <cairo/cairo.h>
 #include <librsvg/rsvg.h>
 #include <string>
