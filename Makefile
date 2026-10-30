@@ -6,7 +6,8 @@ else
 OPT=-O3 -DNDEBUG
 endif
 
-FLAGS+=-Isrc -I$(HOME)/usr/include -I/usr/local/include -Werror 
+FLAGS+=-Isrc -I$(HOME)/usr/include -I/usr/local/include -Werror
+CXXFLAGS+=-std=c++17
 PKG_CONFIG=pkg-config
 
 FLAGS+=$(shell $(PKG_CONFIG) --cflags cairo)
