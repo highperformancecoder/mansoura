@@ -11,8 +11,10 @@
 #include <limits>
 #include <map>
 #include <fstream>
+#include <numbers>
 #include <sstream>
 using namespace std;
+using std::numbers::pi;
 
 using namespace mansoura;
 
@@ -613,7 +615,7 @@ namespace mansoura
     if (!ylabel.empty())
       {
         TextProperties tp(ylabel,0.6*lh);
-        tp.angle=-0.5*M_PI;
+        tp.angle=-0.5*pi;
         auto pango=mans.cachedRender(tp);
         auto extents=pango->extents();
         mans.moveTo(offx-0.5*width+0.5*extents.height,0.5*extents.width);
@@ -623,7 +625,7 @@ namespace mansoura
     if (!y1label.empty())
       {
         TextProperties tp(y1label,0.6*lh);
-        tp.angle=-0.5*M_PI;
+        tp.angle=-0.5*pi;
         auto pango=mans.cachedRender(tp);
         auto extents=pango->extents();
         mans.moveTo(0.5*width-1.5*extents.height,0.5*extents.width);
@@ -959,7 +961,7 @@ namespace mansoura
                   for (size_t j=0; j<x[i].size(); j+=symbolEvery)
                     if (inBounds(iflogx(x[i][j]), y[i][j], side))
                       {
-                        mans.arc(sx*iflogx(x[i][j]), xfy(y[i][j]), 1.5*ls.width, 0, 2*M_PI);
+                        mans.arc(sx*iflogx(x[i][j]), xfy(y[i][j]), 1.5*ls.width, 0, 2*pi);
                         mans.fill();
                       }
                 }
@@ -975,7 +977,7 @@ namespace mansoura
           for (endTick=startTick; endTick<xticks.size() && xticks[endTick].first < maxx; endTick++);
           unsigned tickIncr=(endTick-startTick)/nxTicks+1;
           double xtick=0, incr=0;
-          pango.setAngle(xtickAngle*M_PI/180.0);
+          pango.setAngle(xtickAngle*pi/180.0);
           for (unsigned i=startTick; i<endTick; i+=tickIncr)
             {
               const std::pair<double,std::string>& xt=xticks[i];
@@ -1071,7 +1073,7 @@ namespace mansoura
         {
           PreserveContext cs(mans);
           mans.scale(1/sx,1);
-          mans.arc(sx*mx,my,1.5*ls.width,0,2*M_PI);
+          mans.arc(sx*mx,my,1.5*ls.width,0,2*pi);
           mans.fill();
         }
 
