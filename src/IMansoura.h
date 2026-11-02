@@ -1,24 +1,23 @@
 /*
-  Abstract interface for Cairo operations to enable testing and mocking
-  @copyright Steve Keen 2012
+  Abstract interface for 2D drawing operations
+  @copyright Ravelation Pty Ltd 2026
   @author Russell Standish
-  This file is part of Minsky.
 
-  Minsky is free software: you can redistribute it and/or modify it
+  Mansoura is free software: you can redistribute it and/or modify it
   under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  Minsky is distributed in the hope that it will be useful,
+  Mansoura is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with Minsky.  If not, see <http://www.gnu.org/licenses/>.
+  along with Mansoura.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef IMANSOURA_H
-#define IMANSOURA_H
+#ifndef MANSOURA_INTERFACE_H
+#define MANSOURA_INTERFACE_H
 
 #include <cmath>
 #include <functional>
@@ -26,7 +25,6 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include <cairo.h>
 
 namespace mansoura
 {
@@ -137,12 +135,11 @@ namespace mansoura
     /// @}
     
     /// @{ Fill and stroke operations
-    virtual void fill() const = 0;
-    virtual void fillPreserve() const = 0;
-    virtual void stroke() const = 0;
-    virtual void strokePreserve() const = 0;
-    virtual void clip() const = 0;
-    virtual void clipPreserve() const = 0;
+    virtual void fill(bool preserve=false) const = 0;
+    /// fill current path using the even-odd rule
+    virtual void fillEvenOdd(bool preserve=false) const = 0;
+    virtual void stroke(bool preserve=false) const = 0;
+    virtual void clip(bool preserve=false) const = 0;
     virtual void resetClip() const = 0;
     virtual void paint() const = 0;
     /// @}
@@ -151,7 +148,6 @@ namespace mansoura
     virtual void setLineWidth(double width) const = 0;
     virtual double getLineWidth() const = 0;
     virtual void setDash(const double* dashes, int num_dashes, double offset) const = 0;
-    virtual void setFillRule(cairo_fill_rule_t fill_rule) const = 0;
     /// @}
     
     /// @{ Color operations

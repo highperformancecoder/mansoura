@@ -1,5 +1,23 @@
-#ifndef MANSOURACAIRO_H
-#define MANSOURACAIRO_H
+/*
+  Concrete implementation of IMansoura, using the Cairo library
+  @copyright Ravelation Pty Ltd 2026
+  @author Russell Standish
+
+  Mansoura is free software: you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Mansoura is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Mansoura.  If not, see <http://www.gnu.org/licenses/>.
+*/
+#ifndef MANSOURA_CAIRO_H
+#define MANSOURA_CAIRO_H
 #include "IMansoura.h"
 #include "SVGItem.h"
 #include <cairo.h>
@@ -37,12 +55,10 @@ namespace mansoura
     std::vector<std::pair<double,double>> flattenedPathPoints() const override;
 
     // Fill and stroke operations
-    void fill() const override;
-    void fillPreserve() const override;
-    void stroke() const override;
-    void strokePreserve() const override;
-    void clip() const override;
-    void clipPreserve() const override;
+    void fill(bool preserve=false) const override;
+    void fillEvenOdd(bool preserve=false) const override;
+    void stroke(bool preserve=false) const override;
+    void clip(bool preserve=false) const override;
     void resetClip() const override;
     void paint() const override;
 
@@ -50,7 +66,6 @@ namespace mansoura
     void setLineWidth(double width) const override;
     double getLineWidth() const override;
     void setDash(const double* dashes, int num_dashes, double offset) const override;
-    void setFillRule(cairo_fill_rule_t fill_rule) const override;
 
     // Color operations
     void setSourceRGB(double r, double g, double b) const override;
@@ -77,9 +92,6 @@ namespace mansoura
     // SVG rendering support
     void renderSVG(const SVGRenderer& svgRenderer, double width, double height) const override;
     
-    // TEMPORARY: Internal accessor for migration - to be removed once all implementations are updated
-    cairo_t* _internalGetCairoContext() const { return cairo; }
-
     void* context() const override {return cairo;}
     
     std::unique_ptr<ICacheRender>

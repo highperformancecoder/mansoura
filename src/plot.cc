@@ -527,7 +527,7 @@ namespace mansoura
         PreserveContext stash(mans);
         mans.rectangle(xoffs,yoffs,width+legendOffset*w,-height);
         mans.setSourceRGB(0,0,0);
-        mans.strokePreserve();
+        mans.stroke(true);
         mans.setSourceRGBA(1,1,1,0.7);
         mans.fill();
       }
@@ -732,7 +732,7 @@ namespace mansoura
 
       mans.setSourceRGBA(0,0,0,1); //black
       mans.rectangle(iflogx(minx),0,dx,h);
-      mans.clipPreserve();
+      mans.clip(true);
       stroke(mans);
       
       mans.setSourceRGBA(0, 0, 0, 1);

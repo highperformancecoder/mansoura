@@ -67,27 +67,41 @@ namespace mansoura
   {cairo_get_current_point(cairo, &x, &y);}
 
   // Fill and stroke operations
-  void MansouraCairo::fill() const
-  {cairo_fill(cairo);}
+  void MansouraCairo::fill(bool preserve) const
+  {
+    if (preserve)
+      cairo_fill_preserve(cairo);
+    else
+      cairo_fill(cairo);
+  }
 
-  void MansouraCairo::fillPreserve() const
-  {cairo_fill_preserve(cairo);}
+  void MansouraCairo::fillEvenOdd(bool preserve) const
+  {
+    cairo_save(cairo);
+    cairo_set_fill_rule(cairo, CAIRO_FILL_RULE_EVEN_ODD);
+    fill(preserve);
+    cairo_restore(cairo);
+  }
   
-  void MansouraCairo::clip() const
-  {cairo_clip(cairo);}
-
-  void MansouraCairo::clipPreserve() const
-  {cairo_clip_preserve(cairo);}
+  void MansouraCairo::clip(bool preserve) const
+  {
+    if (preserve)
+      cairo_clip_preserve(cairo);
+    else
+      cairo_clip(cairo);
+  }
 
   void MansouraCairo::resetClip() const
   {cairo_reset_clip(cairo);}
 
-  void MansouraCairo::stroke() const
-  {cairo_stroke(cairo);}
+  void MansouraCairo::stroke(bool preserve) const
+  {
+    if (preserve)
+      cairo_stroke_preserve(cairo);
+    else
+      cairo_stroke(cairo);
+  }
   
-  void MansouraCairo::strokePreserve() const
-  {cairo_stroke_preserve(cairo);}
-
   void MansouraCairo::paint() const
   {cairo_paint(cairo);}
 
@@ -100,9 +114,6 @@ namespace mansoura
 
   void MansouraCairo::setDash(const double* dashes, int num_dashes, double offset) const
   {cairo_set_dash(cairo, dashes, num_dashes, offset);}
-
-  void MansouraCairo::setFillRule(cairo_fill_rule_t fill_rule) const
-  {cairo_set_fill_rule(cairo, fill_rule);}
 
   // Color operations
   void MansouraCairo::setSourceRGB(double r, double g, double b) const
