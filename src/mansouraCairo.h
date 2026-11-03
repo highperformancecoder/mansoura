@@ -92,7 +92,7 @@ namespace mansoura
     // SVG rendering support
     void renderSVG(const SVGRenderer& svgRenderer, double width, double height) const override;
     
-    void* context() const override {return cairo;}
+    const void* context() const override {return cairo;}
     
     std::unique_ptr<ICacheRender>
     cachedRender(const TextProperties& tp) const override;

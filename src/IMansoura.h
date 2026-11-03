@@ -55,7 +55,7 @@ namespace mansoura
     virtual ~ICacheRender()=default;
     virtual void show()=0;
     virtual TextExtents extents() const=0;
-    virtual void* context() const=0;
+    virtual const void* context() const=0;
     /// effective font size (including any default) in user units
     virtual double fontSize() const=0;
     /// index into the text corresponding to horizontal position \a x
@@ -163,8 +163,6 @@ namespace mansoura
     /// show text with no markup interpretation
     void showPlainText(const std::string& s, double fs=std::nan("")) const
     {showText(TextProperties("",s,fs));}
-//    virtual void setFontSize(double size) const = 0;
-//    virtual void selectFontFace(const std::string& family, cairo_font_slant_t slant, cairo_font_weight_t weight) const = 0;
     /// return metrics for a given bit of text
     virtual TextExtents textExtents(const TextProperties& text) const = 0;
     
@@ -192,7 +190,7 @@ namespace mansoura
     virtual void renderSVG(const SVGRenderer& svgRenderer, double width, double height) const = 0;
 
     /// returns reference to underlying context for caching purposes
-    virtual void* context() const=0;
+    virtual const void* context() const=0;
 
     /// return a cached object of rendered text
     virtual std::unique_ptr<ICacheRender> cachedRender(const TextProperties& tp) const=0;
