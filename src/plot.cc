@@ -11,15 +11,14 @@
 #include <limits>
 #include <map>
 #include <fstream>
-#include <numbers>
 #include <sstream>
 using namespace std;
-using std::numbers::pi;
 
 using namespace mansoura;
 
 namespace
 {
+  const double pi=3.1415927;
   inline double sqr(double x) {return x*x;}
 }
 

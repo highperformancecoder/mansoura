@@ -181,7 +181,7 @@ namespace mansoura
       void operator=(const CairoPath&)=delete;
       void appendToCurrent(const IMansoura& ctx) const override
       {
-        auto cr=static_cast<cairo_t*>(ctx.context());
+        auto cr=static_cast<cairo_t*>(const_cast<void*>(ctx.context()));
         // apply saved transformation along with path
         cairo_save(cr);
         cairo_set_matrix(cr,&transformation);
@@ -247,7 +247,7 @@ namespace mansoura
     TextExtents extents() const override
     {return TextExtents{left(),top(),Pango::width(),Pango::height()};}
       
-    void* context() const override
+    const void* context() const override
     {return cairoContext();}
     double fontSize() const override {return getFontSize();}
     std::string::size_type posToIdx(double x) const override {return Pango::posToIdx(x);}

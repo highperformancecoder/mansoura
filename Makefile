@@ -38,7 +38,7 @@ FLAGS+=-DSTATIC_BUILD -DNO_FWD_DECLARE_STL -DMXE
 CC=$(MXE_PREFIX)-gcc
 CPLUSPLUS=$(MXE_PREFIX)-g++
 PKG_CONFIG=$(MXE_PREFIX)-pkg-config
-LIBS+=-lgdiplus
+LIBS+=-lgdiplus -lgdi32
 
 # xdr on MXE is positively ancient, so just disable it here
 XDR=
@@ -63,7 +63,6 @@ FLAGS+=$(DIRS:%=-I%/include)
 
 LINK=$(CPLUSPLUS)
 CPP=$(CPLUSPLUS) -E
-CXXFLAGS+=-std=c++20
 
 # cairo dependencies
 FLAGS+=-DCAIRO $(shell $(PKG_CONFIG) --cflags cairo)
