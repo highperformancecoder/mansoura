@@ -16,6 +16,7 @@
 
 #include <pango/pangocairo.h>
 #include <cairo.h>
+#include "fontSettings.h"
 
 #include <cmath>
 #include <stdexcept>
@@ -68,17 +69,14 @@ namespace mansoura
     double scale;
   public:
     double angle; // angle the text
-    static const char *defaultFamily;
-    /// an additional font size scale factor to help rendering on Windows high DPI displays.
-    static double scaleFactor;
     Pango(cairo_t* cairo): 
-      cairo(cairo), layout(pango_cairo_create_layout(cairo)), scale(scaleFactor), angle(0) 
+      cairo(cairo), layout(pango_cairo_create_layout(cairo)), scale(GlobalFontSettings::scaleFactor), angle(0) 
     {
       PangoRectangle tmp={0,0,0,0};
       bbox=tmp;
       FontDescription fd(layout);
-      if (defaultFamily)
-        pango_font_description_set_family(fd,defaultFamily);
+      if (GlobalFontSettings::defaultFamily)
+        pango_font_description_set_family(fd,GlobalFontSettings::defaultFamily);
       pango_layout_set_font_description(layout, fd); //assume ownership not passed
     }
     ~Pango() {
@@ -104,7 +102,7 @@ namespace mansoura
     }
     void setFontSize(double sz) {
       if (!std::isfinite(sz)) return; // cowardly refuse to set a non real valued font size
-      scale*=scaleFactor*sz/getFontSize();
+      scale*=GlobalFontSettings::scaleFactor*sz/getFontSize();
     }
     void setFontFamily(const char* family) {
       FontDescription fd(layout);

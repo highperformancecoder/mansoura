@@ -7,7 +7,12 @@
 */
 
 #include "mansouraPlot.h"
+#include <cassert>
+#ifdef __EMSCRIPTEN__
+#include "textMarkup.h"
+#else
 #include "pango.h"
+#endif
 #include <limits>
 #include <map>
 #include <fstream>
@@ -1148,6 +1153,10 @@ namespace mansoura
 //    addNew(surf, doRedraw, pens.begin(), pens.end(), 1);
 //  }      
 
+#ifdef __EMSCRIPTEN__
+  string stripPangoMarkup(const string& markedUptext)
+  {return plainText(parseMarkup(markedUptext));}
+#else
   string stripPangoMarkup(const string& markedUptext)
   {
     char *tmp=nullptr;
@@ -1159,6 +1168,7 @@ namespace mansoura
       }
     return markedUptext; // failed to parse, return original text
   }
+#endif
 
   struct Round
   {

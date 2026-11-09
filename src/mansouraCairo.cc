@@ -24,8 +24,6 @@ using namespace std;
 
 namespace mansoura
 {
-  const char *Pango::defaultFamily=nullptr;
-  double Pango::scaleFactor=1;
 
   MansouraCairo::MansouraCairo(cairo_t* c) : cairo(c) {}
   

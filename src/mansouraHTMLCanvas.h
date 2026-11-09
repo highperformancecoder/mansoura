@@ -73,10 +73,10 @@ namespace mansoura
     std::vector<std::pair<double,double>> flattenedPathPoints() const override;
 
     // Fill and stroke operations
-    void fill(bool) const override;
-    void fillEvenOdd(bool) const override;
-    void stroke(bool) const override;
-    void clip(bool) const override;
+    void fill(bool preserve=false) const override;
+    void fillEvenOdd(bool preserve=false) const override;
+    void stroke(bool preserve=false) const override;
+    void clip(bool preserve=false) const override;
     void resetClip() const override;
     void paint() const override;
 

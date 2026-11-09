@@ -19,27 +19,37 @@
 #ifndef MANSOURA_SVGITEM_H
 #define MANSOURA_SVGITEM_H
 #include <cairo/cairo.h>
+#ifndef __EMSCRIPTEN__
 #include <librsvg/rsvg.h>
+#endif
 #include <string>
 
 namespace mansoura
 {
   class SVGRenderer
   {
+#ifndef __EMSCRIPTEN__
     RsvgHandle* svg=nullptr;
+#endif
 #ifdef MXE
     double m_width=0, m_height=0;
 #endif
     friend class MansouraCairo;
   public:
+    /// The name of the file this was loaded from, and its contents,
+    /// for backends that draw SVG themselves (eg the HTML canvas).
+    /// Only populated by the wasm build. Empty if the file couldn't
+    /// be read. (classdesc ignores #ifdef, so these exist everywhere.)
+    std::string resource, source;
+
     SVGRenderer() {}
-    SVGRenderer(const std::string& resource) {setResource(resource);}
+    SVGRenderer(const std::string& file) {setResource(file);}
     SVGRenderer(const SVGRenderer&)=delete;
     void operator=(const SVGRenderer&)=delete;
     ~SVGRenderer();
 
     /// initialise object from an SVG file
-    void setResource(const std::string& resource);
+    void setResource(const std::string& file);
     /// render SVG into region of size \a width \a height
     void render(cairo_t*, double width, double height) const;
   };

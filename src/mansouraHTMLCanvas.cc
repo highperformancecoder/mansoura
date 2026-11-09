@@ -1,6 +1,7 @@
 #include "mansouraHTMLCanvas.h"
 #include "mansouraRecording.h"
 #include "textMarkup.h"
+#include "fontSettings.h"
 #include <emscripten/bind.h>
 #include <algorithm>
 #include <cstdio>
@@ -163,7 +164,7 @@ namespace mansoura
       Layout l;
       l.runs= tp.markup.empty()? plainRuns(tp.plainText): parseMarkup(tp.markup);
       l.basePx=ptToPx*effectiveFontSize(tp);
-      l.baseFamily=tp.fontFamily.empty()? defaultFamily: tp.fontFamily;
+      l.baseFamily=!tp.fontFamily.empty()? tp.fontFamily: GlobalFontSettings::defaultFamily? GlobalFontSettings::defaultFamily: defaultFamily;
       // the line is always at least as tall as the base font
       TextRun base;
       tie(l.ascent,l.descent)=fontMetrics(fontFor(base,l.basePx,l.baseFamily),l.basePx);

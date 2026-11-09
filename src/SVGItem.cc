@@ -18,6 +18,30 @@
 // Implementations of canvas items representing operations and variables.
 
 #include "SVGItem.h"
+#ifdef __EMSCRIPTEN__
+#include <fstream>
+#include <sstream>
+namespace mansoura
+{
+  // If the file cannot be read (eg it is not in the virtual file
+  // system), source is left empty, and nothing will be drawn.
+  void SVGRenderer::setResource(const std::string& file)
+  {
+    resource=file;
+    source.clear();
+    std::ifstream f(file);
+    if (f)
+      {
+        std::ostringstream os;
+        os<<f.rdbuf();
+        source=os.str();
+      }
+  }
+  SVGRenderer::~SVGRenderer() {}
+  // cairo is unavailable: drawing is done by IMansoura::renderSVG
+  void SVGRenderer::render(cairo_t*, double, double) const {}
+}
+#else
 //#include "cairo_base.h"
 #include <librsvg-2.0/librsvg/rsvg.h>
 
@@ -76,5 +100,4 @@ namespace mansoura
   }
 
 }
-
-
+#endif
