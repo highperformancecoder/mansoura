@@ -124,6 +124,8 @@ namespace mansoura
     PlotType plotType=line;
     /// axis labels
     std::string xlabel, ylabel, y1label;
+    /// plot title (pango markup), drawn above the plot, and included in exported images
+    std::string title;
     double xtickAngle=-45; ///< angle (in degrees) at which xtick labels are drawn
     /// if |log_10 (x)| < exp_threshold, do not rescale tick value
     unsigned exp_threshold=4;

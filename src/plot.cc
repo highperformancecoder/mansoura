@@ -683,6 +683,21 @@ namespace mansoura
         return;
       }
       
+    // reserve room at the top of the plot for the title (if any)
+    PreserveContext titleStash(mans);
+    if (!title.empty())
+      {
+        const double titleHeight=0.05*height;
+        auto pango=mans.cachedRender({title,titleHeight});
+        mans.setSourceRGB(0,0,0);
+        mans.moveTo(0.5*(width-pango->extents().width), 0);
+        pango->show();
+        // allow some room for the title
+        const double used=std::min(pango->extents().height,0.5*height);
+        mans.translate(0,used);
+        height-=used;
+      }
+
     double dx=iflogx(maxx)-iflogx(minx);
     auto mm=miny, mm1=miny1;
     
