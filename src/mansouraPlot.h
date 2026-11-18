@@ -198,6 +198,8 @@ namespace mansoura
   private:
     /// maximum legend label width per unit of font size, as measured by the last IMansoura legendSize call
     mutable double legendLabelWidthPerFontSz=0;
+    /// vertical space used by the title in the last call to draw()
+    mutable double m_titleUsedHeight=0;
     /// compute the legend offsets and font size (negative or zero font sizes are possible)
     void legendOffsets(double& xoff, double& yoff, double plotWidth, double plotHeight) const;
   protected:
@@ -247,7 +249,8 @@ namespace mansoura
     double mouseX=-1, mouseY=-1; ///< position in user coordinates of value box
     unsigned mousePen=0; // discovered pen 
     std::string valueString;
-   
+    
+    double titleUsedHeight() const {return m_titleUsedHeight;}
   private:
     //    std::vector<cairo::SurfacePtr> penLabel;
     std::vector<std::string> penTextLabel;

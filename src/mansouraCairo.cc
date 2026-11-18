@@ -262,7 +262,7 @@ namespace mansoura
       if (!tp.fontFamily.empty())
         Pango::setFontFamily(tp.fontFamily.c_str());
       Pango::angle=tp.angle;
-      return tp;
+      return m_properties=tp;
     }
   };
   

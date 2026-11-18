@@ -637,27 +637,6 @@ namespace mansoura
       }
   }          
 
-//  void Plot::draw(cairo::Surface& surface)
-//  {
-//    cairo_identity_matrix(surface.cairo());
-//    //cairo_translate(surface.cairo(),-0.5*surface.height(),-0.5*surface.width());
-//    if (autoscale) setMinMax();
-//    // if there is no size, set size to 1, so at least a bounding box is drawn
-//    if (maxx<=minx) maxx=minx+1;
-//    if (maxy<=miny) 
-//      {
-//        if (miny1<maxy1)
-//          {
-//            miny=miny1;
-//            maxy=maxy1;
-//          }
-//        else
-//          maxy=miny+1;
-//      }
-//    draw(surface.cairo(), surface.width(), surface.height());
-//    cairo_surface_flush(surface.surface());
-//  }
-
   double Plot::lh(double width, double height) const
   {
     return 0.05*fontScale*(height-2*offy)/(1+0.03*fontScale);
@@ -665,6 +644,23 @@ namespace mansoura
 
   void Plot::draw(const IMansoura& mans, double width, double height) const
   {  
+    // reserve room at the top of the plot for the title (if any)
+    m_titleUsedHeight=0;
+    PreserveContext titleStash(mans);
+    if (!title.empty())
+      {
+        const double titleHeight=0.05*height;
+        auto pango=mans.cachedRender({title,titleHeight});
+        mans.setSourceRGB(0,0,0);
+        mans.moveTo(0.5*(width-pango->extents().width), 0);
+        pango->show();
+        // allow some room for the title
+        const double used=std::min(pango->extents().height,0.5*height);
+        mans.translate(0,used);
+        height-=used;
+        m_titleUsedHeight=used;
+      }
+
     const char* errMsg=NULL;
     if (logx && minx<=0)
       errMsg = "logx requires positive range";
@@ -683,21 +679,6 @@ namespace mansoura
         return;
       }
       
-    // reserve room at the top of the plot for the title (if any)
-    PreserveContext titleStash(mans);
-    if (!title.empty())
-      {
-        const double titleHeight=0.05*height;
-        auto pango=mans.cachedRender({title,titleHeight});
-        mans.setSourceRGB(0,0,0);
-        mans.moveTo(0.5*(width-pango->extents().width), 0);
-        pango->show();
-        // allow some room for the title
-        const double used=std::min(pango->extents().height,0.5*height);
-        mans.translate(0,used);
-        height-=used;
-      }
-
     double dx=iflogx(maxx)-iflogx(minx);
     auto mm=miny, mm1=miny1;
     
